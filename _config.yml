@@ -18,10 +18,9 @@ authors:
     name: Maxim
     display_name: Maxim
     gravatar: 95bc56a8e3cf3f1a2cc586731103e6c9
-    email: wowthemesnet@gmail.com
-    web: https://www.wowthemes.net/donate/
-    twitter: https://twitter.com/wowthemesnet
-    description: "Author of Mediumish, a Bootstrap Medium styled template available for WordPress, HTML, Ghost and Jekyll. You are currently previewing Jekyll template demo."
+    email: makcim.sahnenko@gmail.com
+    twitter: https://twitter.com/makcimkabro
+    description: "Автор и основатель блога"
 # Plugins
 plugins:
   - jekyll-paginate

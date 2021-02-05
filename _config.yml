@@ -1,18 +1,26 @@
-# Site
-name: "Memoirs"
-title: "Memoirs"
-description: "I will take you on the fabulous world of exploration. Travel, culture, lifestyle. Eat, Pray, Love!"
-logo: 'assets/images/logo.png'
-favicon: 'assets/images/logo.png'
+---
+title: Memoirs
+timezone: UTC
+collections:
+  posts:
+    title: Posts
+    output: true
+  uploads:
+    title: Uploads
+    output: true
+name: Memoirs
+description: I will take you on the fabulous world of exploration. Travel, culture,
+  lifestyle. Eat, Pray, Love!
+logo: assets/images/logo.png
+favicon: assets/images/logo.png
 baseurl: makcimkabro.github.io
-google_analytics: 'UA-xxxxxxxx-1'
-disqus: 'demowebsite'
-mailchimp-list: 'https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b'
-include: ["_pages"]
-permalink: /:title/
+google_analytics: UA-xxxxxxxx-1
+disqus: demowebsite
+mailchimp-list: https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b
+include:
+- _pages
+permalink: "/:title/"
 email: wowthemesnet@gmail.com
-
-# Authors
 authors:
   Maxim:
     name: Maxim
@@ -20,51 +28,38 @@ authors:
     gravatar: 95bc56a8e3cf3f1a2cc586731103e6c9
     email: makcim.sahnenko@gmail.com
     twitter: https://twitter.com/makcimkabro
-    description: "Автор и основатель блога"
-# Plugins
+    description: Автор и основатель блога
 plugins:
-  - jekyll-paginate
-  - jekyll-sitemap
-  - jekyll-feed
-  - jekyll-seo-tag
-  - jekyll-archives
-  - jekyll-figure
-
-# Archives
+- jekyll-paginate
+- jekyll-sitemap
+- jekyll-feed
+- jekyll-seo-tag
+- jekyll-archives
+- jekyll-figure
 jekyll-archives:
   enabled:
-    - categories
+  - categories
   layout: archive
   permalinks:
-    category: '/category/:name/'
-
-# Pagination
+    category: "/category/:name/"
 paginate: 6
-paginate_path: /page:num/
-
-# Other
+paginate_path: "/page:num/"
 highlighter: none
 markdown: kramdown
 kramdown:
-   syntax_highlighter_opts:
-      disable : true
-
-
-
-# Adsense (change to "enabled" to activate, also your client id and ad slot. Create a new ad unit from your Adsense account to get the slot.)
-adsense: "disabled"
-adsense-data-ad-client: "ca-pub-3412143450191416"
-adsense-data-ad-slot: "1363087678"
-
-# Lazy Images ("enabled" or "disabled")
-lazyimages: "disabled"
-
-# Post Author Box ("enabled" or "disabled")
-authorbox: "disabled"
-
-# Sass
+  syntax_highlighter_opts:
+    disable: true
+adsense: disabled
+adsense-data-ad-client: ca-pub-3412143450191416
+adsense-data-ad-slot: '1363087678'
+lazyimages: disabled
+authorbox: disabled
 sass:
   sass_dir: _sass
   style: compressed
-
-exclude: [changelog.md, LICENSE.txt, README.md, Gemfile, Gemfile.lock]
+exclude:
+- changelog.md
+- LICENSE.txt
+- README.md
+- Gemfile
+- Gemfile.lock

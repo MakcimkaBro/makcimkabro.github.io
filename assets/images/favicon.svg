@@ -1,0 +1,11 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 128H128V0H0V128Z" fill="#A1C3A2"/>
+<path d="M192 512H320V384H192V512Z" fill="#A1C3A2"/>
+<path d="M0 512H128V384H0V512Z" fill="#A1C3A2"/>
+<path d="M0 320H128V192H0V320Z" fill="#3F3D56"/>
+<path d="M192 320H320V192H192V320Z" fill="#3F3D56"/>
+<path d="M384 0V128H512V0H384Z" fill="#A1C3A2"/>
+<path d="M192 128H320V0H192V128Z" fill="#A1C3A2"/>
+<path d="M384 320H512V192H384V320Z" fill="#3F3D56"/>
+<path d="M384 512H512V384H384V512Z" fill="#A1C3A2"/>
+</svg>

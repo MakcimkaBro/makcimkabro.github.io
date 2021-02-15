@@ -18,14 +18,21 @@ post_class: post-template
             {% else %}
             <img class="author-thumb" src="https://www.gravatar.com/avatar/{{ author.gravatar }}?s=250&d=mm&r=x" alt="{{ author.display_name }}">
             {% endif %}
-        </div>            
+        </div>
         <div>
-        Written by <a target="_blank" class="text-dark" href="{{ author.web }}">{{ author.display_name }}</a> on 
-        <span class="post-date"><time class="post-date" datetime="{{ page.date | date:"%Y-%m-%d" }}">{{ page.date | date_to_string }}</time></span>           
+        Written by <b><a target="_blank" class="text-dark" href="{{ author.web }}">{{ author.display_name }}</a></b> on
+        <span class="post-date"> <b><time class="post-date" datetime="{{ page.date | date:"%Y-%m-%d" }}">{{ page.date | date_to_string }}</time></span>
         {% if page.last_modified_at %}
         (Updated: <time datetime="{{ page.last_modified_at | date_to_xmlschema }}" itemprop="dateModified">{{ page.last_modified_at | date: "%b %-d, %Y" }}</time>)
         {% endif %}
-        </div>            
+        {% assign sortedCategories = page.categories | sort %}
+        {% for category in sortedCategories %}
+        | Категория: <a class="smoothscroll badge badge-primary text-capitalize" href="{{site.baseurl}}/categories#{{ category | replace: " ","-" }}">{{ category }}</a>
+        {% endfor %}
+        {% if page.rating %}
+        | Рейтинг: {% include star_rating.html %}
+        {% endif %}
+        </div>
     </div>
     {% endif %}
 </div>
@@ -42,11 +49,11 @@ post_class: post-template
 {% include article.html %}
 
 <!-- Rating -->
-{% if page.rating %}
+<!-- {% if page.rating %}
 <div class="rating mt-4 mb-4 d-flex align-items-center">
-    <strong class="mr-1">Rating:</strong> {% include star_rating.html %}
+    <strong class="mr-1">Рейтинг:</strong> {% include star_rating.html %}
 </div>
-{% endif %}
+{% endif %} -->
 
 <!-- Author Box if enabled from _config.yml -->
 {% include author-box.html %}
@@ -60,7 +67,7 @@ post_class: post-template
 <!-- Related Post -->
 {% include related-posts.html %}
 
-<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first:
 https://search.google.com/structured-data/testing-tool/u/0/
 ================================================== -->
 {% if page.rating %}

@@ -1,6 +1,5 @@
 ---
-title: Categories
-permalink: "/categories"
 layout: categories
+title: Категории
+permalink: /categories
 ---
-

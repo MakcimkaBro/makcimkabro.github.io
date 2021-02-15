@@ -1,22 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-<link rel="icon" href="{{ site.baseurl }}/assets/images/logo.png">
-
-<title>{{ page.title }} | {{site.name}}</title>
-
-{% seo %}
-    
-<link href="{{ site.baseurl }}/assets/css/prism.css" rel="stylesheet">
-
-<link href="{{ site.baseurl }}/assets/css/theme.css" rel="stylesheet">
-
-<script src="{{ site.baseurl }}/assets/js/jquery.min.js"></script>
-
-</head>
+<html lang="ru">
+{% include head.html %}
 
 {% if jekyll.environment == 'production' %}
 <!-- change your GA id in _config.yml -->
@@ -41,23 +25,14 @@ ga('send', 'pageview');
 <!-- Begin Sidebar Navigation
 ================================================== -->
 
-<div class="sidebar">    
-</div>   
+<div class="sidebar">
+</div>
 <div class="nav-icon">
     <div class="hamburger-bar"></div>
 </div>
 <div id="blackover-nav" class="blackover"></div>
-<nav id="menu">
-    <ul>
-        <h3>Navigation</h3>
-        <li><a href="{{ site.baseurl }}/">Home</a></li>
-        <li><a href="{{ site.baseurl }}/about">About <span class="badge badge-primary">Memoirs Jekyll Theme</span></a></li>
-        <li><a target="_blank" href="https://bootstrapstarter.com/bootstrap-templates/jekyll-theme-memoirs/">Get Memoirs</a></li>      
-        <li><a href="{{ site.baseurl }}/contact">Contact</a></li>       
-    </ul>   
-</nav>
-
-{% include search-lunr.html %}
+{% include menu.html %}
+<!-- {% include search-lunr.html %} -->
 
 
 <!-- End Sidebar Navigation
@@ -69,18 +44,21 @@ ga('send', 'pageview');
 
     <!-- Site Logo/Name
     ================================================== -->
-   
-    <a class="navbar-brand" href="{{ site.baseurl }}/">
+		{% if page.url == '/' %}
+    <span class="navbar-brand">
         <img src="{{ site.baseurl }}/{{ site.logo }}" alt="{{ site.name }}">
-    </a>  
-   
+    </span>
+		{% else %}
+		<a class="navbar-brand" href="{{ site.baseurl }}/">
+        <img src="{{ site.baseurl }}/{{ site.logo }}" alt="{{ site.name }}">
+    </a>
+		{% endif %}
+
 
     <!-- Site Tag
     ================================================== -->
     {% if page.url == '/' %}
-        <p class="sitetag">
-            {{ site.description }}
-        </p>
+		<h2>Дизайн — это <span class="badge badge-primary typed"></span></h2>
     {% endif %}
 
     <!-- Content
@@ -89,10 +67,10 @@ ga('send', 'pageview');
         {{ content }}
     </div>
 
-    {% if site.mailchimp-list %}
+    <!-- {% if site.mailchimp-list %} -->
     <!-- Newsletter
     ================================================== -->
-    <div class="newsletter text-center">
+    <!-- <div class="newsletter text-center">
         <span class="h4"><img src="{{ site.baseurl }}/{{ site.logo }}" class="newsletter-logo" alt="{{site.title}}"> &nbsp; Never miss a <b>story</b> from us, subscribe to our newsletter</span>
         <form action="{{site.mailchimp-list}}" method="post" name="mc-embedded-subscribe-form" class="wj-contact-form validate" target="_blank" novalidate>
             <div class="mc-field-group d-inline-flex">
@@ -101,24 +79,14 @@ ga('send', 'pageview');
             </div>
         </form>
     </div>
-    {% endif %}
-    
+    {% endif %} -->
+
 </div>
 
 <!-- Begin Footer
 ================================================== -->
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-sm-12 text-center text-lg-left">
-                Copyright © {{ site.time | date: "%Y" }} {{ site.name }} 
-            </div>
-            <div class="col-md-6 col-sm-12 text-center text-lg-right">    
-                <a target="_blank" href="https://www.wowthemes.net/memoirs-free-jekyll-theme/">Memoirs Jekyll Theme</a> by WowThemes.net
-            </div>
-        </div>
-    </div>
-</footer>
+<!-- {% include cookie-block.html %} -->
+{% include footer.html %}
 <!-- End Footer
 ================================================== -->
 
@@ -139,5 +107,23 @@ ga('send', 'pageview');
 <script id="dsq-count-scr" src="//{{site.disqus}}.disqus.com/count.js"></script>
 {% endif %}
 
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
+<script type="text/javascript">
+var typed = new Typed('.typed', {
+strings: ["background and text", "задний фон и текст"],
+typeSpeed: 50,
+startDelay: 1000
+});
+</script>
+
+<script type="text/javascript">
+$('.home-services-slide').slick({
+  infinite: true,
+  slidesToShow: 3,
+  slidesToScroll: 2,
+	autoplay: true,
+  autoplaySpeed: 3000,
+});
+</script>
 </body>
 </html>

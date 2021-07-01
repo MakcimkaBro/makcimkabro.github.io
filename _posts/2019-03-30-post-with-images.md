@@ -1,9 +1,12 @@
 ---
+title: Post With Image
+date: 2019-03-30 08:03:11 Z
+categories:
+- jekyll
+- update
 layout: post
-title:  "Post With Image"
-date:   2019-03-30 15:03:11 +0700
-categories: jekyll update
 ---
+
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Massa enim nec dui nunc mattis enim ut. Eget nunc lobortis mattis aliquam faucibus. Fermentum leo vel orci porta. Dignissim cras tincidunt lobortis feugiat vivamus at. Lacinia quis vel eros donec ac. Non consectetur a erat nam at lectus urna duis convallis. Accumsan lacus vel facilisis volutpat est velit egestas. Non quam lacus suspendisse faucibus. Nec nam aliquam sem et tortor consequat. Id donec ultrices tincidunt arcu non sodales neque sodales. Eu mi bibendum neque egestas. Vestibulum lorem sed risus ultricies.
 
 ![Pantai](/nangka/assets/images/pantai.jpg)

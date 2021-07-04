@@ -1,10 +1,10 @@
 ---
-layout: home
 title: Home
-landing-title: 'Hi, my name is Forty'
-description: null
-image: null
-author: null
+layout: home
+landing-title: Hi, my name is Forty
+description: 
+image: 
+author: 
 show_tile: false
 ---
 

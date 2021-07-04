@@ -1,6 +1,6 @@
 ---
-layout: page
 title: Elements
+layout: page
 image: assets/images/pic01.jpg
 nav-menu: true
 ---

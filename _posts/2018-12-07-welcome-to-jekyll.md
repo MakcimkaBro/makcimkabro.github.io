@@ -1,9 +1,15 @@
 ---
-layout: post
 title: Welcome to Jekyll!
+date: 2018-12-07 00:00:00 Z
+categories:
+- jekyll
+tags:
+- jekyll
+- theme
+- yat
+layout: post
 subtitle: A awesome static site generator.
 author: Jeffrey
-categories: jekyll
 banner:
   video: https://vjs.zencdn.net/v/oceans.mp4
   loop: true
@@ -12,11 +18,10 @@ banner:
   image: https://bit.ly/3xTmdUP
   opacity: 0.618
   background: "#000"
-  height: "100vh"
-  min_height: "38vh"
-  heading_style: "font-size: 4.25em; font-weight: bold; text-decoration: underline"
-  subheading_style: "color: gold"
-tags: jekyll theme yat
+  height: 100vh
+  min_height: 38vh
+  heading_style: 'font-size: 4.25em; font-weight: bold; text-decoration: underline'
+  subheading_style: 'color: gold'
 sidebar: []
 ---
 

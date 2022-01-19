@@ -1,9 +1,12 @@
 ---
-layout: post
 title: Video example
-subtitle:
-categories: example
-tags: [video]
+date: 2017-12-18 00:00:00 Z
+categories:
+- example
+tags:
+- video
+layout: post
+subtitle: 
 ---
 
 ## Canon in D (Pachelbel's Canon) - Cello & Piano [BEST WEDDING VERSION]

@@ -1,0 +1,3 @@
+feedgenerator
+requests
+beautifulsoup4

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Программирование - OpenCart</title>
+    <description>Фриланс вакансии: Программирование - OpenCart</description>
+    <link>https://YOUR_USERNAME.github.io/freelance-rss/</link>
+    <lastBuildDate>Fri, 02 Jan 2026 16:48:42 GMT</lastBuildDate>
+    <language>uk</language>
+    <item>
+      <title>Вакансії на freelancehunt.com</title>
+      <link>https://freelancehunt.com/projects?name=opencart</link>
+      <description>Актуальні вакансії по напрямку Программирование - OpenCart на платформі freelancehunt.com</description>
+      <pubDate>Fri, 02 Jan 2026 16:48:42 GMT</pubDate>
+      <guid isPermaLink="true">https://freelancehunt.com/projects?name=opencart</guid>
+    </item>
+    <item>
+      <title>Вакансії на freelance.ua</title>
+      <link>https://freelance.ua/orders/?page=1&amp;q=opencart</link>
+      <description>Актуальні вакансії по напрямку Программирование - OpenCart на платформі freelance.ua</description>
+      <pubDate>Fri, 02 Jan 2026 16:48:42 GMT</pubDate>
+      <guid isPermaLink="true">https://freelance.ua/orders/?page=1&amp;q=opencart</guid>
+    </item>
+    <item>
+      <title>Вакансії на upwork.com</title>
+      <link>https://www.upwork.com/nx/search/jobs/?q=opencart&amp;sort=recency</link>
+      <description>Актуальні вакансії по напрямку Программирование - OpenCart на платформі upwork.com</description>
+      <pubDate>Fri, 02 Jan 2026 16:48:42 GMT</pubDate>
+      <guid isPermaLink="true">https://www.upwork.com/nx/search/jobs/?q=opencart&amp;sort=recency</guid>
+    </item>
+  </channel>
+</rss>

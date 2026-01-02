@@ -108,7 +108,7 @@ def check_update_signal(url):
 def generate_feed(category_name, urls):
     feed = Rss201rev2Feed(
         title=f"{category_name} jobs",
-        link="https://your-github-username.github.io/rss/",
+        link="https://makcimkabro.github.io/rss/",
         description=f"RSS feed for {category_name} jobs",
         language="en",
     )

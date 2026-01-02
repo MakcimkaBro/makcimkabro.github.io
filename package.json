@@ -1,9 +1,0 @@
-{
-  "name": "freelance-rss",
-  "version": "1.0.0",
-  "description": "RSS feed generator for freelance job listings",
-  "scripts": {
-    "generate": "node generate-rss.js"
-  },
-  "dependencies": {}
-}

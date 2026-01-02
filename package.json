@@ -1,9 +1,13 @@
 {
-  "name": "freelance-rss",
+  "name": "freelance-rss-parser",
   "version": "1.0.0",
-  "description": "RSS feed generator for freelance job listings",
+  "description": "RSS feed generator with real job parsing",
   "scripts": {
-    "generate": "node generate-rss.js"
+    "generate": "node scripts/generate-rss.js"
   },
-  "dependencies": {}
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "puppeteer": "^21.0.0"
+  }
 }

@@ -1,9 +1,9 @@
-name: Generate RSS Feeds
+name: Parse and Generate RSS Feeds
 
 on:
   schedule:
-    - cron: '0 */1 * * *'  # Каждые 6 часов
-  workflow_dispatch:  # Ручной запуск
+    - cron: '0 */6 * * *'  # Кожні 6 годин
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -24,12 +24,23 @@ jobs:
       with:
         node-version: '20'
         
-    - name: Generate RSS feeds
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Install Puppeteer dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y chromium-browser
+        
+    - name: Generate RSS feeds with parsing
       run: node generate-rss.js
+      env:
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 'true'
+        PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
       
     - name: Commit and push changes
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add feeds/ index.html
-        git diff --quiet && git diff --staged --quiet || (git commit -m "🔄 Обновление RSS фидов - $(date '+%Y-%m-%d %H:%M:%S')" && git push)
+        git add feeds/
+        git diff --quiet && git diff --staged --quiet || (git commit -m "🔄 Оновлення RSS фідів - $(date '+%Y-%m-%d %H:%M:%S')" && git push)

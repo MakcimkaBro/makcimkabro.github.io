@@ -287,7 +287,7 @@ function generateRSSFeed(category, subcategory, jobs) {
   <channel>
     <title>${escapeXml(feedTitle)}</title>
     <description>Фриланс вакансії: ${escapeXml(feedTitle)}</description>
-    <link>https://YOUR_USERNAME.github.io/freelance-rss/</link>
+    <link>https://makcimkabro.github.io/freelance-rss/</link>
     <lastBuildDate>${now}</lastBuildDate>
     <language>uk</language>
 `;

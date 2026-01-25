@@ -1,4 +1,4 @@
-name: Dev → Main (with tests)
+name: Dev to Main
 
 on:
   push:

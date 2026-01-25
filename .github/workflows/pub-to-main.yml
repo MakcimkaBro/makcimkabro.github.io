@@ -1,4 +1,4 @@
-name: Pub → Main (Siteleaf content)
+name: Siteleaf Pub to Main
 
 on:
   push:

@@ -66,10 +66,27 @@ jobs:
       - name: Create or update Pull Request
         if: steps.check_pr.outputs.pr_exists == '0'
         run: |
-          git checkout main
-          git merge origin/dev --no-ff -m "Auto-merge: dev to main (checks passed ✅)"
-          git push origin main
+          gh pr create \
+            --base main \
+            --head dev \
+            --title "🚀 Auto: Merge dev to main" \
+            --body "## ✅ All checks passed
+
+          **Tests:** Passed ✓
+          **Build:** Successful ✓
+          
+          Ready to merge!
+          
+          ---
+          _This PR was automatically created by GitHub Actions_" \
+            --label "automated-pr"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Notify on success
-        if: success()
-        run: echo "✅ Dev branch successfully merged to main after passing checks"
+      - name: Update existing PR
+        if: steps.check_pr.outputs.pr_exists != '0'
+        run: |
+          echo "PR already exists, updating..."
+          gh pr comment --body "♻️ Updated with new changes. All checks passed!" $(gh pr list --base main --head dev --state open --json number --jq '.[0].number')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

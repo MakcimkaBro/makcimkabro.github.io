@@ -1,4 +1,4 @@
-name: Dev to Main (with checks)
+name: Dev to Main (with Jekyll checks)
 
 on:
   push:
@@ -15,40 +15,50 @@ jobs:
         with:
           ref: dev
       
-      # Установка Node.js (настройте версию под свой проект)
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      # Установка Ruby для Jekyll
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          node-version: '18'
-          cache: 'npm'
+          ruby-version: '3.1'
+          bundler-cache: true
+      
+      # Проверка что Gemfile существует
+      - name: Check Gemfile
+        run: |
+          if [ ! -f Gemfile ]; then
+            echo "Gemfile not found!"
+            exit 1
+          fi
       
       # Установка зависимостей
       - name: Install dependencies
-        run: npm ci
+        run: bundle install
       
-      # Проверка кода (линтинг)
-      - name: Run linter
-        run: npm run lint
-        continue-on-error: false
+      # Сборка Jekyll сайта
+      - name: Build Jekyll site
+        run: bundle exec jekyll build
+        env:
+          JEKYLL_ENV: production
       
-      # Запуск тестов
-      - name: Run tests
-        run: npm test
-        continue-on-error: false
-      
-      # Сборка проекта
-      - name: Build project
-        run: npm run build
-      
-      # Проверка что сборка успешна
+      # Проверка что сайт собрался
       - name: Check build output
         run: |
-          if [ ! -d "dist" ] && [ ! -d "build" ]; then
-            echo "Build directory not found!"
+          if [ ! -d "_site" ]; then
+            echo "Build directory _site not found!"
             exit 1
           fi
+          echo "✅ Jekyll site built successfully"
+      
+      # Проверка HTML (опционально)
+      - name: Test HTML
+        run: |
+          bundle exec htmlproofer ./_site \
+            --disable-external \
+            --allow-hash-href \
+            --ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
+        continue-on-error: true
 
-  create-pull-request:
+  auto-merge-to-main:
     needs: test-and-build
     runs-on: ubuntu-latest
     if: success()
@@ -58,42 +68,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
-      # Создание PR автоматически
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: dev
-          base: main
-          title: 'Auto: Merge dev to main'
-          body: |
-            ## Автоматический PR из dev в main
-            
-            ✅ Все проверки пройдены:
-            - Линтинг
-            - Тесты
-            - Сборка
-            
-            Проверьте изменения и подтвердите мерж.
-          labels: automated-pr, dev-to-main
-
-  # Опционально: автоматический мерж если хотите полную автоматизацию
-  auto-merge:
-    needs: create-pull-request
-    runs-on: ubuntu-latest
-    if: success()
-    
-    steps:
-      - name: Checkout main
-        uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 0
+      
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
       
       - name: Merge dev to main
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git merge origin/dev --no-ff -m "Auto-merge dev to main after successful checks"
+          git checkout main
+          git merge origin/dev --no-ff -m "Auto-merge: dev to main (checks passed ✅)"
           git push origin main
+      
+      - name: Notify on success
+        if: success()
+        run: echo "✅ Dev branch successfully merged to main after passing checks"

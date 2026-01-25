@@ -1,4 +1,4 @@
-name: Run Tests on PR
+name: Jekyll Tests
 
 on:
   pull_request:
@@ -10,55 +10,72 @@ on:
       - dev
 
 jobs:
-  quality-checks:
+  jekyll-build-test:
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          node-version: '18'
-          cache: 'npm'
+          ruby-version: '3.1'
+          bundler-cache: true
       
       - name: Install dependencies
-        run: npm ci
+        run: bundle install
       
-      # Линтинг
-      - name: ESLint
-        run: npm run lint
-        continue-on-error: false
-      
-      # Проверка форматирования
-      - name: Prettier check
-        run: npm run format:check
-        continue-on-error: true
-      
-      # Unit тесты
-      - name: Run unit tests
-        run: npm run test:unit
-        continue-on-error: false
-      
-      # E2E тесты (если есть)
-      - name: Run E2E tests
-        run: npm run test:e2e
-        continue-on-error: true
-      
-      # Проверка размера бандла
-      - name: Build and check bundle size
+      # Проверка конфигурации Jekyll
+      - name: Check Jekyll config
         run: |
-          npm run build
-          du -sh dist/
+          if [ ! -f _config.yml ]; then
+            echo "⚠️ _config.yml not found"
+            exit 1
+          fi
+          echo "✅ Jekyll config found"
       
-      # Lighthouse CI (опционально)
-      - name: Lighthouse CI
-        uses: treosh/lighthouse-ci-action@v10
-        with:
-          urls: |
-            http://localhost:3000
-          uploadArtifacts: true
+      # Сборка сайта
+      - name: Build site
+        run: bundle exec jekyll build --verbose
+        env:
+          JEKYLL_ENV: production
+      
+      # Проверка структуры
+      - name: Check build structure
+        run: |
+          echo "Checking _site directory..."
+          ls -la _site/
+          
+          # Проверка что есть index.html
+          if [ ! -f _site/index.html ]; then
+            echo "❌ index.html not found in _site"
+            exit 1
+          fi
+          echo "✅ index.html exists"
+      
+      # Проверка размера сайта
+      - name: Check site size
+        run: |
+          SITE_SIZE=$(du -sh _site | cut -f1)
+          echo "📦 Site size: $SITE_SIZE"
+      
+      # HTML Proofer - проверка ссылок и HTML
+      - name: Test HTML with HTMLProofer
+        run: |
+          gem install html-proofer
+          htmlproofer ./_site \
+            --disable-external \
+            --allow-hash-href \
+            --ignore-urls "/^http:\/\/127/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/" \
+            --ignore-files "/assets/"
+        continue-on-error: true
+      
+      # Проверка Markdown файлов
+      - name: Lint Markdown files
+        run: |
+          gem install mdl
+          mdl _posts/ --style .mdl_style.rb
         continue-on-error: true
 
   security-check:
@@ -68,13 +85,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Run security audit
-        run: npm audit --audit-level=moderate
-        continue-on-error: true
-      
-      - name: Check for secrets
-        uses: trufflesecurity/trufflehog@main
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          path: ./
-          base: main
-          head: HEAD
+          ruby-version: '3.1'
+      
+      # Проверка безопасности зависимостей
+      - name: Security audit
+        run: |
+          gem install bundler-audit
+          bundle audit check --update
+        continue-on-error: true

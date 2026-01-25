@@ -1,4 +1,4 @@
-name: Dev to Main (via PR)
+name: Dev to Main
 
 on:
   push:
@@ -7,55 +7,57 @@ on:
 
 jobs:
   test-and-build:
+    name: 🧪 Run tests & build
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout dev branch
+      - name: 📥 Checkout dev branch
         uses: actions/checkout@v4
         with:
           ref: dev
       
-      - name: Setup Ruby
+      - name: 💎 Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
           bundler-cache: true
       
-      - name: Check Gemfile
-        run: |
-          if [ ! -f Gemfile ]; then
-            echo "Gemfile not found!"
-            exit 1
-          fi
-      
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         run: bundle install
       
-      - name: Build Jekyll site
+      - name: 🔨 Build Jekyll site
         run: bundle exec jekyll build
         env:
           JEKYLL_ENV: production
       
-      - name: Check build output
+      - name: ✅ Verify build
         run: |
           if [ ! -d "_site" ]; then
-            echo "Build directory _site not found!"
+            echo "❌ Build directory _site not found!"
             exit 1
           fi
+          
+          if [ ! -f "_site/index.html" ]; then
+            echo "❌ index.html not found!"
+            exit 1
+          fi
+          
           echo "✅ Jekyll site built successfully"
+          echo "📊 Site size: $(du -sh _site | cut -f1)"
 
   create-pull-request:
+    name: 📝 Create PR to main
     needs: test-and-build
     runs-on: ubuntu-latest
     if: success()
     
     steps:
-      - name: Checkout repository
+      - name: 📥 Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
       
-      - name: Check if PR already exists
+      - name: 🔍 Check if PR already exists
         id: check_pr
         run: |
           PR_EXISTS=$(gh pr list --base main --head dev --state open --json number --jq length)
@@ -63,30 +65,29 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Create or update Pull Request
+      - name: ✨ Create Pull Request
         if: steps.check_pr.outputs.pr_exists == '0'
         run: |
           gh pr create \
             --base main \
             --head dev \
-            --title "🚀 Auto: Merge dev to main" \
+            --title "🚀 Dev → Main (tests passed)" \
             --body "## ✅ All checks passed
 
-          **Tests:** Passed ✓
+          **Tests:** Passed ✓  
           **Build:** Successful ✓
           
-          Ready to merge!
+          Ready to merge to production!
           
           ---
-          _This PR was automatically created by GitHub Actions_" \
-            --label "automated-pr"
+          _Automated PR from dev branch_"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Update existing PR
+      - name: 💬 Update existing PR
         if: steps.check_pr.outputs.pr_exists != '0'
         run: |
-          echo "PR already exists, updating..."
-          gh pr comment --body "♻️ Updated with new changes. All checks passed!" $(gh pr list --base main --head dev --state open --json number --jq '.[0].number')
+          PR_NUMBER=$(gh pr list --base main --head dev --state open --json number --jq '.[0].number')
+          gh pr comment $PR_NUMBER --body "♻️ Updated with new changes. All tests passed! ✅"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

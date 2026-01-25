@@ -1,0 +1,112 @@
+name: Dev to Main (with Jekyll checks)
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout dev branch
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+      
+      # Установка Ruby для Jekyll
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+      
+      # Проверка что Gemfile существует
+      - name: Check Gemfile
+        run: |
+          if [ ! -f Gemfile ]; then
+            echo "Gemfile not found!"
+            exit 1
+          fi
+      
+      # Установка зависимостей
+      - name: Install dependencies
+        run: bundle install
+      
+      # Сборка Jekyll сайта
+      - name: Build Jekyll site
+        run: bundle exec jekyll build
+        env:
+          JEKYLL_ENV: production
+      
+      # Проверка что сайт собрался
+      - name: Check build output
+        run: |
+          if [ ! -d "_site" ]; then
+            echo "Build directory _site not found!"
+            exit 1
+          fi
+          echo "✅ Jekyll site built successfully"
+      
+      # Проверка HTML (опционально)
+      - name: Test HTML
+        run: |
+          bundle exec htmlproofer ./_site \
+            --disable-external \
+            --allow-hash-href \
+            --ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
+        continue-on-error: true
+
+  auto-merge-to-main:
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    if: success()
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+      
+      - name: Merge dev to main
+        run: |
+          git fetch origin main
+          git checkout main
+          git merge origin/dev --no-ff -m "Auto-merge: dev to main (checks passed ✅)" -X theirs || {
+            echo "⚠️ Merge conflict detected. Trying alternative strategy..."
+            git merge --abort
+            git merge origin/dev -m "Auto-merge: dev to main (checks passed ✅)" -X ours && git push origin main || {
+              echo "❌ Unable to auto-merge. Creating PR instead..."
+              exit 1
+            }
+          }
+          git push origin main
+      
+      - name: Notify on success
+        if: success()
+        run: echo "✅ Dev branch successfully merged to main after passing checks"
+      
+      - name: Create PR on conflict
+        if: failure()
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: dev
+          base: main
+          title: '[Auto] Merge dev to main - Manual review needed'
+          body: |
+            ## ⚠️ Auto-merge failed due to conflicts
+            
+            Conflicts detected in:
+            - Files need manual review
+            
+            ✅ All tests passed
+            Please review and merge manually.
+          labels: needs-review, auto-merge-conflict

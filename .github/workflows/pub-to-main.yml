@@ -1,4 +1,4 @@
-name: Pub to Main (auto-merge content)
+name: Pub → Main (Siteleaf content)
 
 on:
   push:
@@ -7,32 +7,37 @@ on:
 
 jobs:
   auto-merge-content:
+    name: 📝 Auto-merge Siteleaf content
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
+      - name: 📥 Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Configure Git
+      - name: ⚙️ Configure Git
         run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
+          git config user.name "Siteleaf Bot"
+          git config user.email "siteleaf@automated"
       
-      - name: Merge pub to main
+      - name: 🔄 Merge pub to main
         run: |
+          git fetch origin main
           git checkout main
-          git merge origin/pub --no-ff -m "Auto-merge: New content from Siteleaf (pub branch)"
+          git merge origin/pub --no-ff -m "📝 New content from Siteleaf"
           git push origin main
       
-      - name: Notify on success
+      - name: ✅ Success notification
         if: success()
-        run: echo "✅ Content from pub branch successfully merged to main"
+        run: |
+          echo "✅ Content from Siteleaf successfully published to main"
+          echo "🌐 Site will be deployed automatically"
       
-      - name: Notify on failure
+      - name: ❌ Failure notification
         if: failure()
         run: |
-          echo "❌ Failed to merge pub to main - manual intervention needed"
+          echo "❌ Failed to merge Siteleaf content"
+          echo "⚠️ Manual intervention required"
           exit 1

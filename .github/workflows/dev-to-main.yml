@@ -80,8 +80,7 @@ jobs:
           Ready to merge to production!
           
           ---
-          _Automated PR from dev branch_" \
-            --label "automated"
+          _Automated PR from dev branch_"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       

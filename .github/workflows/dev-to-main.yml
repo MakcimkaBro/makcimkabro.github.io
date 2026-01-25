@@ -1,0 +1,99 @@
+name: Dev to Main (with checks)
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout dev branch
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+      
+      # Установка Node.js (настройте версию под свой проект)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      # Установка зависимостей
+      - name: Install dependencies
+        run: npm ci
+      
+      # Проверка кода (линтинг)
+      - name: Run linter
+        run: npm run lint
+        continue-on-error: false
+      
+      # Запуск тестов
+      - name: Run tests
+        run: npm test
+        continue-on-error: false
+      
+      # Сборка проекта
+      - name: Build project
+        run: npm run build
+      
+      # Проверка что сборка успешна
+      - name: Check build output
+        run: |
+          if [ ! -d "dist" ] && [ ! -d "build" ]; then
+            echo "Build directory not found!"
+            exit 1
+          fi
+
+  create-pull-request:
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    if: success()
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      # Создание PR автоматически
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: dev
+          base: main
+          title: 'Auto: Merge dev to main'
+          body: |
+            ## Автоматический PR из dev в main
+            
+            ✅ Все проверки пройдены:
+            - Линтинг
+            - Тесты
+            - Сборка
+            
+            Проверьте изменения и подтвердите мерж.
+          labels: automated-pr, dev-to-main
+
+  # Опционально: автоматический мерж если хотите полную автоматизацию
+  auto-merge:
+    needs: create-pull-request
+    runs-on: ubuntu-latest
+    if: success()
+    
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      
+      - name: Merge dev to main
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git merge origin/dev --no-ff -m "Auto-merge dev to main after successful checks"
+          git push origin main

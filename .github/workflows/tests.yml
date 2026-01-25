@@ -1,0 +1,80 @@
+name: Run Tests on PR
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+  push:
+    branches:
+      - dev
+
+jobs:
+  quality-checks:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      # Линтинг
+      - name: ESLint
+        run: npm run lint
+        continue-on-error: false
+      
+      # Проверка форматирования
+      - name: Prettier check
+        run: npm run format:check
+        continue-on-error: true
+      
+      # Unit тесты
+      - name: Run unit tests
+        run: npm run test:unit
+        continue-on-error: false
+      
+      # E2E тесты (если есть)
+      - name: Run E2E tests
+        run: npm run test:e2e
+        continue-on-error: true
+      
+      # Проверка размера бандла
+      - name: Build and check bundle size
+        run: |
+          npm run build
+          du -sh dist/
+      
+      # Lighthouse CI (опционально)
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            http://localhost:3000
+          uploadArtifacts: true
+        continue-on-error: true
+
+  security-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run security audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+      
+      - name: Check for secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: main
+          head: HEAD

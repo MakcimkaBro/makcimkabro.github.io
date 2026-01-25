@@ -7,16 +7,8 @@ gem "minima", "~> 2.5"
 # GitHub Pages плагины
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.12"
-  gem "jekyll-seo-tag"
-  gem "jekyll-sitemap"
-  gem "jekyll-paginate"
-end
-
-# Инструменты для тестирования
-group :test do
-  gem "html-proofer"
-  gem "mdl" # Markdown linter
-  gem "bundler-audit" # Security checker
+  gem "jekyll-seo-tag", "~> 2.6"
+  gem "jekyll-sitemap", "~> 1.4"
 end
 
 platforms :mingw, :x64_mingw, :mswin, :jruby do

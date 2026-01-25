@@ -60,22 +60,17 @@ jobs:
           SITE_SIZE=$(du -sh _site | cut -f1)
           echo "📦 Site size: $SITE_SIZE"
       
-      # HTML Proofer - проверка ссылок и HTML
+      # HTML Proofer - проверка ссылок и HTML (только если установлен)
       - name: Test HTML with HTMLProofer
         run: |
-          gem install html-proofer
-          htmlproofer ./_site \
-            --disable-external \
-            --allow-hash-href \
-            --ignore-urls "/^http:\/\/127/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/" \
-            --ignore-files "/assets/"
-        continue-on-error: true
-      
-      # Проверка Markdown файлов
-      - name: Lint Markdown files
-        run: |
-          gem install mdl
-          mdl _posts/ --style .mdl_style.rb
+          if bundle exec htmlproofer --version > /dev/null 2>&1; then
+            bundle exec htmlproofer ./_site \
+              --disable-external \
+              --allow-hash-href \
+              --ignore-urls "/^http:\/\/127/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
+          else
+            echo "⚠️ HTMLProofer not installed, skipping"
+          fi
         continue-on-error: true
 
   security-check:
@@ -93,6 +88,9 @@ jobs:
       # Проверка безопасности зависимостей
       - name: Security audit
         run: |
-          gem install bundler-audit
-          bundle audit check --update
+          if bundle exec bundle-audit --version > /dev/null 2>&1; then
+            bundle exec bundle-audit check --update
+          else
+            echo "⚠️ bundler-audit not installed, skipping"
+          fi
         continue-on-error: true

@@ -1,0 +1,21 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+<meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+
+<!-- SEO -->
+{% seo %}
+
+<link href="{{ '/_assets/css/fonts.css' | relative_url }}" rel="stylesheet">
+<link href="{{ '/_assets/css/custom.css' | relative_url }}" rel="stylesheet">
+
+<!-- Tailwind CSS (скомпилированный) -->
+<link href="{{ '/_assets/css/output.css' | relative_url }}" rel="stylesheet">
+
+<!-- Кастомные стили -->
+<!-- <link href="{{ '/_assets/css/custom.css' | relative_url }}" rel="stylesheet"> -->
+
+<!-- Favicon -->
+ <link rel="icon" type="image/svg+xml" href="{{ '/_assets/images/fav/favicon.svg' | relative_url }}">

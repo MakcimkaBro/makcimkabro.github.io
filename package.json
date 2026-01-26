@@ -1,0 +1,21 @@
+{
+  "name": "jekyll-site",
+  "version": "1.0.0",
+  "description": "Jekyll site with Tailwind CSS and DaisyUI",
+  "scripts": {
+    "dev": "npm run watch:tailwind",
+    "watch:tailwind": "tailwindcss -i ./_assets/css/input.css -o ./_assets/css/output.css --watch",
+    "build:tailwind": "NODE_ENV=production tailwindcss -i ./_assets/css/input.css -o ./_assets/css/output.css --minify",
+    "build": "npm run build:tailwind && bundle exec jekyll build"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1",
+    "daisyui": "^4.6.1",
+    "@tailwindcss/typography": "^0.5.10",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5"
+  }
+}

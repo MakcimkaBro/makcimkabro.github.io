@@ -1,36 +1,67 @@
 ---
-title: Your awesome title
+# Основные настройки сайта
+title: Makcimka Bro
+description: Branding & Digital design
+url: "https://makcimkabro.github.io"
+baseurl: ""
 timezone: UTC
+
+# Автор
+author:
+  name: Ваше имя
+  email: your-email@example.com
+  
+# Настройки билда
+markdown: kramdown
+permalink: /blog/:year/:month/:day/:title/
+
+# Коллекции
 collections:
-  pages:
-    title: Pages
-    output: true
-    permalink: "/:name/"
   posts:
     title: Posts
     output: true
   uploads:
     title: Uploads
     output: true
-defaults:
-- scope:
-    path: ''
-    type: posts
-  values:
-    layout: post
-- scope:
-    path: ''
-    type: pages
-  values:
-    layout: page
-email: your-email@example.com
-description: Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for Google search
-  results) and in your feed.xml site description.
-baseurl: 
-url: 
-twitter_username: jekyllrb
-github_username: jekyll
-theme: minima
+  pages:
+    output: true
+    permalink: /:name/
+
+# Плагины
 plugins:
 - jekyll-feed
+- jekyll-seo-tag
+- jekyll-sitemap
+
+# Копируем _assets в билд
+include:
+  - _assets
+
+# Исключаем из билда
+exclude:
+  - node_modules/
+  - package.json
+  - package-lock.json
+  - tailwind.config.js
+  - postcss.config.js
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
+# Настройки Sass (если будете использовать)
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Defaults для front matter
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"

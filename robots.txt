@@ -1,0 +1,7 @@
+User-agent: Yandex
+Disallow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: https://makcimkabro.github.io/sitemap.xml

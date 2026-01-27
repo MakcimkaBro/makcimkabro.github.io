@@ -1,5 +1,8 @@
 ---
 title: Makcimka Bro
+description: Branding & Digital design
+url: https://makcimkabro.github.io
+baseurl: ''
 timezone: UTC
 collections:
   pages:
@@ -23,12 +26,6 @@ defaults:
     type: pages
   values:
     layout: page
-description: Branding & Digital design
-url: https://makcimkabro.github.io
-baseurl: ''
-author:
-  name: Ваше имя
-  email: your-email@example.com
 markdown: kramdown
 permalink: "/blog/:year/:month/:day/:title/"
 plugins:

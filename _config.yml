@@ -1,17 +1,5 @@
 ---
 title: Makcimka Bro
-timezone: UTC
-collections:
-  pages:
-    title: Pages
-    output: true
-    permalink: "/:name/"
-  posts:
-    title: Posts
-    output: true
-  uploads:
-    title: Uploads
-    output: true
 defaults:
 - scope:
     path: ''
